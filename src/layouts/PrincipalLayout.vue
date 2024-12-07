@@ -93,7 +93,6 @@ export default {
     height: 70%;
     background: white;
     border-radius: 8px;
-    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
     overflow: hidden;
 }
 
@@ -101,9 +100,9 @@ aside {
     width: 250px;
     background: #f4f4f4;
     padding: 20px;
-    /* /* box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); */ 
     transform: translateX(-100%);
     transition: transform 0.3s ease-in-out;
+    z-index: 999;
 }
 
 aside.open {

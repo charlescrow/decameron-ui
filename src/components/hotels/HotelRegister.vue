@@ -1,6 +1,12 @@
 <template>
     <h3 class="mb-5"> Registro de Hotel </h3>
     <div class="container">
+        <!-- Mostramos los errores que llegan del back -->
+        <div v-if="errorsForm.length" class="alert alert-danger">
+            <ul>
+                <li style="text-align: left;" v-for="(error, index) in errorsForm" :key="index">{{ error }}</li>
+            </ul>
+        </div>
         <form autocomplete="off" @submit.prevent="submitForm">
             <div class="row">
                 <div class="col-lg-6 col-12">
@@ -82,6 +88,7 @@ export default {
 
         const v$ = useVuelidate(rules, form);
         const showErrors = ref(false);
+        const errorsForm = ref([]);
 
         const submitForm = () => {
             v$.value.$validate();
@@ -103,13 +110,14 @@ export default {
                     }, 2000); 
                 }
             } catch (error) {
-                console.error('Error al enviar los datos:', error);
+                errorsForm.value = Object.values(error.response.data.errors).flat();
             }
         };
 
         const formReset = () => {
             Object.assign(form, formDefault); 
             showErrors.value = false;
+            errorsForm.value = [];
         }
 
         return { 
@@ -117,7 +125,8 @@ export default {
             submitForm,
             form,
             showErrors,
-            formReset
+            formReset,
+            errorsForm
         }
     }
 }

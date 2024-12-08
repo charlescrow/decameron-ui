@@ -1,6 +1,12 @@
 <template>
     <h3 class="mb-5"> Distribución de Hotel </h3>
     <div class="container">
+        <!-- Mostramos los errores que llegan del back -->
+        <div v-if="errorsForm.length" class="alert alert-danger">
+            <ul>
+                <li style="text-align: left;" v-for="(error, index) in errorsForm" :key="index">{{ error }}</li>
+            </ul>
+        </div>
         <form autocomplete="off" @submit.prevent="submitForm">
             <div class="row">
                 <div class="col-lg-6 col-12">
@@ -25,7 +31,7 @@
                 </div>
                 <div class="col-lg-6 col-12">
                     <div class="form-floating mb-3">
-                        <select v-model="form.type_room_id" class="form-control">
+                        <select v-model="form.type_room_id" class="form-control" @change="validateRooms">
                             <option v-for="(type, index) in typeRoom" :key="index" :value="type.id">{{ type.name }}
                             </option>
                         </select>
@@ -36,7 +42,7 @@
                     </div>
                     <div class="form-floating mb-3">
                         <select v-model="form.accommodation_room_id" class="form-control">
-                            <option v-for="(type, index) in accomodationRoom" :key="index" :value="type.id">{{ type.name }}
+                            <option v-for="(type, index) in filterType" :key="index" :value="type.id">{{ type.name }}
                             </option>
                         </select>
                         <label>Tipo de acomodación</label>
@@ -56,7 +62,7 @@
 <script>
 import router from '@/router';
 import useVuelidate from '@vuelidate/core';
-import { required } from '@vuelidate/validators';
+import { numeric, required } from '@vuelidate/validators';
 import axios from 'axios';
 import { onMounted, reactive, ref } from 'vue';
 import { toast } from 'vue3-toastify';
@@ -69,16 +75,15 @@ export default {
             number_room: '',
             type_room_id: '',
             accommodation_room_id: ''
-
         }
 
         const form = reactive({ ...formDefault });
 
         const rules = {
-            hotel_id: { required },
-            number_room: { required },
-            type_room_id: { required },
-            accommodation_room_id: { required }
+            hotel_id: { required, numeric },
+            number_room: { required, numeric },
+            type_room_id: { required, numeric },
+            accommodation_room_id: { required, numeric }
         }
 
         const v$ = useVuelidate(rules, form);
@@ -87,6 +92,8 @@ export default {
         const typeRoom = ref([]);
         const accomodationRoom = ref([]);
         const infoHotel = ref([]);
+        const filterType = ref([]);
+        const errorsForm = ref([]);
 
         const submitForm = () => {
             v$.value.$validate();
@@ -95,6 +102,24 @@ export default {
             } else {
                 showErrors.value = true;
             }
+        }
+
+        /** 
+         * Validaciones que los tipos sean los acordes a lo solicitado
+         * 
+         * */
+        const validateRooms = () => {
+            let roomSelected = form.type_room_id;
+            
+            let optionsRooms = {
+                1: ['Sencilla', 'Doble'],
+                2: ['Triple', 'Cuádruple'],
+                3: ['Sencilla', 'Doble', 'Triple']
+            };          
+
+            filterType.value = accomodationRoom.value.filter((item) => {
+                return optionsRooms[roomSelected].includes(item.name);
+            });            
         }
 
         const registerDistribution = async () => {
@@ -108,13 +133,15 @@ export default {
                     }, 2000);
                 }
             } catch (error) {
-                console.error('Error al enviar los datos:', error);
+                errorsForm.value = Object.values(error.response.data.errors).flat();                    
             }
         };
 
         const formReset = () => {
             Object.assign(form, formDefault);
+            filterType.value = null;
             showErrors.value = false;
+            errorsForm.value = [];
         }
 
         onMounted(() => {
@@ -134,7 +161,10 @@ export default {
             formReset,
             typeRoom,
             accomodationRoom,
-            infoHotel
+            infoHotel,
+            validateRooms,
+            filterType,
+            errorsForm
         }
     }
 }

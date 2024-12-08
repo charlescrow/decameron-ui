@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import PrincipalLayout from '@/layouts/PrincipalLayout.vue';
 import Index from '@/views/Index.vue';
 import HotelList from '@/components/hotels/HotelList.vue';
-import DistributionHotels from '@/components/distribution/DistributionHotels.vue';
+import DistributionHotelList from '@/components/distribution/DistributionHotelList.vue';
+import DistributionHotelRegister from '@/components/distribution/DistributionHotelRegister.vue';
 import HotelRegister from '@/components/hotels/HotelRegister.vue';
 
 const routes = [
@@ -17,8 +18,13 @@ const routes = [
             },
             {
                 path: '/distribucion', 
-                name: 'distribution-hotels',
-                component: DistributionHotels,
+                name: 'distribution-hotels-list',
+                component: DistributionHotelList,
+            },
+            {
+                path: '/distribucion/registro', 
+                name: 'distribution-hotels-register',
+                component: DistributionHotelRegister,
             },
             {
                 path: '/hoteles', 

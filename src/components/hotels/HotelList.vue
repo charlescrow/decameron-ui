@@ -1,16 +1,18 @@
 <template>
-    <h3> Listado de Hoteles </h3>
-    <br><br>
-    <vue-good-table 
-        :columns="columns" 
-        :rows="rows" 
-        :pagination-options="paginationOptions"
-        :searchOptions="searchOptions" 
-        :line-numbers="true"
-        theme="polar-bear" 
-        styleClass="vgt-table bordered" 
-        compactMode 
-    />
+    <h3 class="mb-5"> Listado de Hoteles </h3>
+    <div class="row">
+        <div class="col-lg-10 offset-lg-2" style="text-align: right;">
+            <router-link to="/hoteles/registro">
+                <button class="btn btn-primary btn-sm mb-3">
+                    <i class="fas fa-plus"></i>
+                    Registrar  
+                </button>
+            </router-link>
+        </div>
+    </div>
+    <vue-good-table :columns="columns" :rows="rows" :pagination-options="paginationOptions"
+        :searchOptions="searchOptions" :line-numbers="true" theme="polar-bear" styleClass="vgt-table bordered"
+        compactMode />
 </template>
 <script>
 import axios from 'axios';
@@ -24,7 +26,7 @@ export default {
         const styleColumn = {
             tdClass : 'text-center',
             thClass : 'text-center'
-        }
+        };
 
         const hotelList = ref([]);
         const columns = ref([
@@ -60,7 +62,7 @@ export default {
             perPage: 5,
             perPageDropdownEnabled: false,
             nextLabel: '',
-            prevLabel: '',
+            prevLabel: ''
         })
 
         const searchOptions = ref({
@@ -86,7 +88,7 @@ export default {
         }
     },
     components: {
-        VueGoodTable,
+        VueGoodTable
     },
 }
 </script>

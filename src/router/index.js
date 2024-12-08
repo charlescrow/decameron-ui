@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import PrincipalLayout from '@/layouts/PrincipalLayout.vue';
 import Index from '@/views/Index.vue';
-import HotelList from '@/components/HotelList.vue';
-import DistributionHotels from '@/components/DistributionHotels.vue';
+import HotelList from '@/components/hotels/HotelList.vue';
+import DistributionHotels from '@/components/distribution/DistributionHotels.vue';
+import HotelRegister from '@/components/hotels/HotelRegister.vue';
 
 const routes = [
     {
@@ -23,6 +24,11 @@ const routes = [
                 path: '/hoteles', 
                 name: 'hotel-list',
                 component: HotelList,
+            },
+            {
+                path: '/hoteles/registro', 
+                name: 'hotel-register',
+                component: HotelRegister,
             },
         ],
     }

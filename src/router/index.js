@@ -6,6 +6,7 @@ import DistributionHotelList from '@/components/distribution/DistributionHotelLi
 import DistributionHotelRegister from '@/components/distribution/DistributionHotelRegister.vue';
 import HotelRegister from '@/components/hotels/HotelRegister.vue';
 import HotelEdit from '@/components/hotels/HotelEdit.vue';
+import DistributionHotelEdit from '@/components/distribution/DistributionHotelEdit.vue';
 
 const routes = [
     {
@@ -26,6 +27,11 @@ const routes = [
                 path: '/distribucion/registro', 
                 name: 'distribution-hotels-register',
                 component: DistributionHotelRegister,
+            },
+            {
+                path: '/distribucion/editar/:distributionHotel',
+                name: 'distribution-edit',
+                component: DistributionHotelEdit,
             },
             {
                 path: '/hoteles', 

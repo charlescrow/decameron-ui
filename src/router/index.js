@@ -48,6 +48,7 @@ const routes = [
                 name: 'hotel-edit',
                 component: HotelEdit,
             },
+            { path: '*', component: Index }
         ],
     }
 ];

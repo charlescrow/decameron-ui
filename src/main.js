@@ -8,7 +8,7 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import Vue3Toastify from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
-axios.defaults.baseURL = 'http://localhost:8001/api';
+axios.defaults.baseURL = 'https://decameron-api-1.onrender.com/api';
 axios.defaults.withCredentials = true;
 
 const app = createApp(App)

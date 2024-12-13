@@ -5,16 +5,25 @@
             <router-link to="/hoteles/registro">
                 <button class="btn btn-primary btn-sm mb-3">
                     <i class="fas fa-plus"></i>
-                    Registrar  
+                    Registrar
                 </button>
             </router-link>
         </div>
     </div>
     <vue-good-table :columns="columns" :rows="rows" :pagination-options="paginationOptions"
         :searchOptions="searchOptions" :line-numbers="true" theme="polar-bear" styleClass="vgt-table bordered"
-        compactMode />
+        compactMode>
+        <template #table-row="props">
+            <span v-if="props.column.field == 'actions'">
+                <router-link :to="{ path: `/hoteles/editar/${props.row.id}` }">
+                    <button title="Editar Hotel" class="btn btn-sm fas fas fa-pen text-success"></button>
+                </router-link>
+            </span>
+        </template>
+    </vue-good-table>
 </template>
 <script>
+
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import { VueGoodTable } from 'vue-good-table-next';
@@ -55,6 +64,12 @@ export default {
                 field: 'address',
                 ...styleColumn
             },
+            {
+                label: 'Acciones',
+                field: 'actions',
+                slot: "actions",
+                ...styleColumn
+            }
         ]);
 
         const paginationOptions = ref({
@@ -76,8 +91,8 @@ export default {
             axios.get('/hotels/list').then(function (response) {
                 hotelList.value = response.data
                 rows.value = response.data
-            })
-        })
+            });
+        });
 
         return {
             hotelList,

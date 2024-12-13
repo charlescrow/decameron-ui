@@ -12,7 +12,15 @@
     </div>
     <vue-good-table :columns="columns" :rows="rows" :pagination-options="paginationOptions"
         :searchOptions="searchOptions" :line-numbers="true" theme="polar-bear" styleClass="vgt-table bordered"
-        compactMode />
+        compactMode>
+        <template #table-row="props">
+            <span v-if="props.column.field == 'actions'">
+                <router-link :to="{ path: `/distribucion/editar/${props.row.id}` }">
+                    <button title="Editar Distribución" class="btn btn-sm fas fas fa-pen text-success"></button>
+                </router-link>
+            </span>
+        </template>
+    </vue-good-table>
 </template>
 <script>
 import axios from 'axios';
@@ -47,6 +55,12 @@ export default {
             {
                 label: 'Acomodación',
                 field: 'accommodation_room.name',
+                ...styleColumn
+            },
+            {
+                label: 'Acciones',
+                field: 'actions',
+                slot: "actions",
                 ...styleColumn
             }
         ]);
